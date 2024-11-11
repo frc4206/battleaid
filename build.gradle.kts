@@ -57,7 +57,7 @@ publishing {
     }
     publications {
         register<MavenPublication>("gpr"){
-            groupId = "org.team4206.battleaid"
+            groupId = "org.team4206"
             from(components["java"])
         }
     }

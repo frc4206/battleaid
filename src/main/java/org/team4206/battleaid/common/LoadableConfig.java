@@ -1,6 +1,6 @@
 package org.team4206.battleaid.common;
 
-import static org.team4206.battleaid.fixed.Static.CONFIG_DIR;
+import static org.team4206.battleaid.Static.CONFIG_DIR;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
