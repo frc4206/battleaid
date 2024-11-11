@@ -2,6 +2,21 @@ package org.team4206.battleaid.common;
 
 import edu.wpi.first.wpilibj.XboxController;
 
+/**
+ * Utility class for retrieving and adjusting the joystick values from a controller.
+ *
+ * <p>Example usage:</p>
+ * <pre>{@code
+ * TunedJoystick joystick = new TunedJoystick(new XboxController(0));
+ * 
+ * jystck.setDeadzone(0.1d).useResponseCurve(ResponseCurve.QUADRATIC);
+ * 
+ * double leftX = jystck.getLeftX();  
+ * double leftY = jystck.getLeftY();  
+ * double rightX = jystck.getRightX();
+ * double rightY = jystck.getRightY();
+ * }</pre>
+ */
 public final class TunedJoystick {
 
     private double deadzone;
@@ -9,7 +24,7 @@ public final class TunedJoystick {
     private ResponseCurve rc;
 
     /*
-     * In this design, only exponential reponse curves
+     * In this design, only exponential response curves
      * are implemented so as to simplify implementation.
      */
     public static enum ResponseCurve {
@@ -29,10 +44,10 @@ public final class TunedJoystick {
          * This function assumes that the input is
          * an absolute value since fractional exponents,
          * and non-odd integer exponents, do not preserve the
-         * sign of the input.  That is, not all exponents are 
+         * sign of the input. That is, not all exponents are
          * reflective on both the x and y axis.
          */
-        public double applyCurve(double val) {
+        double applyCurve(double val) {
             return Math.pow(val, exponent);
         }
     }
@@ -44,7 +59,13 @@ public final class TunedJoystick {
     }
 
     /* Epic math that scales one domain to a new domain */
-    public static double map(double val, double in_min, double in_max, double out_min, double out_max) {
+    static double map(double val, double in_min, double in_max, double out_min, double out_max) {
+        if (val < in_min) {
+            return out_min;
+        }
+        if (val > in_max) {
+            return out_max;
+        }
         return ((val - in_min) * (out_max - out_min) / (in_max - in_min)) + out_min;
     }
 
@@ -54,7 +75,7 @@ public final class TunedJoystick {
      * This design implements a square deadzone. A circular deadzone
      * requires the x AND y values to calculate vector magnitude.
      */
-    public double applyDeadzone(double val) {
+    double applyDeadzone(double val) {
         return val > deadzone ? map(val, deadzone, 1.0d, 0.0d, 1.0d) : 0.0d;
     }
 
@@ -76,23 +97,35 @@ public final class TunedJoystick {
      * Note that the parameter is an absolute value
      * in order to reduce internal branching.
      */
-    private double tune(double i) {
+    double tune(double i) {
         double result = rc.applyCurve(applyDeadzone(Math.abs(i)));
         return (i >= 0.0d) ? result : result * -1.0d;
     }
 
+    /**
+     * @return Tuned X axis of left joystick.
+     */
     public double getLeftX() {
         return tune(cntrllr.getLeftX());
     }
 
+    /**
+     * @return Tuned Y axis of left joystick.
+     */
     public double getLeftY() {
         return tune(cntrllr.getLeftY());
     }
 
+    /**
+     * @return Tuned X axis of right joystick.
+     */
     public double getRightX() {
         return tune(cntrllr.getRightX());
     }
 
+    /**
+     * @return Tuned Y axis of right joystick.
+     */
     public double getRightY() {
         return tune(cntrllr.getRightY());
     }

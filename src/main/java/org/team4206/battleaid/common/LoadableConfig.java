@@ -13,12 +13,46 @@ import org.tomlj.TomlParseError;
 import org.tomlj.TomlParseResult;
 import org.tomlj.TomlTable;
 
+/**
+ * Utility to initialize Plain-Old-Java-Objects from *.toml(s). 
+ * LoadableConfig can initialize all Java primitives (int, boolean, float, String, etc.) and also objects.<br><br>
+ * 
+ * In order for the initialization to succeed, the class must meet a few requirements:<br>
+ * 1. Objects <i>must</i> extends LoadableConfig.<br>
+ * 2. Fields of the object must be public.<br>
+ * 3. The name of the field must match the key in the *.toml.<br>
+ * 4. The input file must be under <i>src/main/deploy/configuration</i>.<br><br>
+ * 
+ * Nested classes <i>should</i> be static.<br>
+ * 
+ * <p>Example usage:</p>
+ * <pre>{@code
+ * public class GenericSubsystem extends LoadableConfig {
+ *      public double d;
+ *      public String s;
+ *      public int i;
+ * 
+ *      public GenericSubsystem(String filename){
+ *          super.load(this, filename);
+ *          
+ *          // Optional print for debug
+ *          LoadableConfig.print(this);
+ *      }
+ * }
+ * 
+ * .
+ * .
+ * .
+ * 
+ * GenericSubsystem gc = new GenericSubsystem("example.toml");
+ * }</pre>
+ */
 public abstract class LoadableConfig {
 
     private Path path;
 
     /**
-     * This custom exception is defined to traps when
+     * This custom exception is defined to trap when
      * the class of the field does not extend the
      * LoadableConfig class. This makes recursion
      * of LoadableConfigs more safe.
@@ -36,7 +70,7 @@ public abstract class LoadableConfig {
     }
 
     /**
-     * This custom excpetion is defined to trap when
+     * This custom exception is defined to trap when
      * there is missing content in the configuration file.
      * This is an elementary mistake that mostly points to
      * lack of discipline.
@@ -135,7 +169,8 @@ public abstract class LoadableConfig {
     }
 
     /**
-     * https://stackoverflow.com/questions/1526826/printing-all-variables-value-from-a-class
+     * Lets a user debug their config to verify initialized contents.<br>
+     * Code taken from <a href="https://stackoverflow.com/questions/1526826/printing-all-variables-value-from-a-class">here</a>.
      */
     public static void print(LoadableConfig c) {
         StringBuilder result = new StringBuilder();
