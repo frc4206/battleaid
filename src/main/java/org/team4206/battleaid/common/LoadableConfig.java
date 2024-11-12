@@ -110,7 +110,7 @@ public abstract class LoadableConfig {
         }
     }
 
-    private <T extends TomlTable> void load(LoadableConfig c, T tt) throws Exception {
+    <T extends TomlTable> void load(LoadableConfig c, T tt) throws Exception {
         Field[] fields = c.getClass().getDeclaredFields();
         for (Field f : fields) {
             f.setAccessible(true);

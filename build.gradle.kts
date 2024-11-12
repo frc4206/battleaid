@@ -9,6 +9,11 @@
 val vrsn = project.file("VERSION").readText().trim();
 project.version = vrsn.toString();
 
+tasks.register<Jar>("sourceJar") {
+    archiveClassifier.set("sources")
+    from(sourceSets.main.get().allSource)
+}
+
 plugins {
     // Apply the java-library plugin for API and implementation separation.
     id("java-library")
@@ -65,6 +70,7 @@ publishing {
         register<MavenPublication>("gpr"){
             groupId = "org.team4206"
             from(components["java"])
+            artifact(tasks["sourceJar"])
         }
     }
 }
