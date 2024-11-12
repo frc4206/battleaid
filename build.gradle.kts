@@ -9,6 +9,11 @@
 val vrsn = project.file("VERSION").readText().trim();
 project.version = vrsn.toString();
 
+tasks.register<Jar>("sourceJar") {
+    archiveClassifier.set("sources")
+    from(sourceSets.main.get().allSource)
+}
+
 plugins {
     // Apply the java-library plugin for API and implementation separation.
     id("java-library")
@@ -25,14 +30,20 @@ dependencies {
     api("edu.wpi.first.wpilibj:wpilibj-java:2024.3.2")
     api("edu.wpi.first.wpiutil:wpiutil-java:2024.3.2")
     api("org.tomlj:tomlj:1.1.1")
+
+    // Test imports
+    testImplementation("edu.wpi.first.wpilibj:wpilibj-java:2024.3.2")
+    testImplementation("edu.wpi.first.wpiutil:wpiutil-java:2024.3.2")
+    testImplementation("org.tomlj:tomlj:1.1.1")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
 }
 
 testing {
     suites {
         // Configure the built-in test suite
         val test by getting(JvmTestSuite::class) {
-            // Use JUnit4 test framework
-            useJUnit("4.13.2")
+            // Use JUnit Jupiter (JUnit 5) test framework
+            useJUnitJupiter()
         }
     }
 }
@@ -59,6 +70,7 @@ publishing {
         register<MavenPublication>("gpr"){
             groupId = "org.team4206"
             from(components["java"])
+            artifact(tasks["sourceJar"])
         }
     }
 }
