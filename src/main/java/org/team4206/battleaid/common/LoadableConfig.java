@@ -2,6 +2,7 @@ package org.team4206.battleaid.common;
 
 import static org.team4206.battleaid.Static.CONFIG_DIR;
 
+import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.nio.file.Path;
@@ -90,7 +91,7 @@ public abstract class LoadableConfig {
      */
     protected void load(LoadableConfig c, String filename) {
         try {
-            this.path = Paths.get(CONFIG_DIR + filename);
+            this.path = Paths.get(CONFIG_DIR + File.separator + filename);
 
             /**
              * Issues in the config file point to accidental edits
