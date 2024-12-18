@@ -1,0 +1,59 @@
+
+name: publish-pages
+
+on: workflow_dispatch
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  build-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+            python-version: '3.13' 
+
+      - name: Setup JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'zulu'
+
+      - name: Install Gradle
+        uses: gradle/wrapper-validation-action@v1
+        with:
+          gradle-version: 'latest'
+
+      - name: Install Sphinx
+        run: |
+          pip install sphinx furo myst_parser sphinx_inline_tabs sphinxemoji
+
+      - name: Build Sphinx
+        run: |
+          sphinx-build -M html ./pages/source docs
+
+    # builds docs and ignores compilation step
+      - name: Build Java Docs
+        run: |
+          ./gradlew javadoc -x compileJava 
+
+    # uploads build artifacts
+      - name: Upload GitHub Pages artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: docs/html
+    
+  deploy:
+    needs: build-docs
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write    # Required for GitHub Pages deployment
+      id-token: write # Required for OIDC authentication
+
+    steps:
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v2
