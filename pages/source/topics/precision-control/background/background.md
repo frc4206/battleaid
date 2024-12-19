@@ -16,7 +16,7 @@ Manipulating joystick inputs effectively can:
 
 ## Deadzones
 
-Every controller is an imperfect device.  Due to hardware imperfections at the microscopic scale, when a joystick returns to the neutral position, the joystick does not usually map to exactly `0.0` input.  So, it is common to have a 'deadzone' (also called a 'deadband'), where any input less than the deadzone is mapped to zero.  Here is some naive pseudocode with a 20% deadzone:
+Every controller is an imperfect device.  Due to hardware imperfections, when a joystick returns to the neutral position, the joystick does not usually map to exactly `0.0` input.  So, it is common to have a 'deadzone' (also called a 'deadband'), where any input less than the deadzone is mapped to zero.  Here is some naive pseudocode with a 20% deadzone:
 
 ```{code-block} java
 :linenos:
@@ -39,7 +39,7 @@ If graphed with the input on the {math}`x` axis and the output on the {math}`y` 
 
 <br>
 
-The area highlighted in yellow is the input where precision control is lost.  This poses an issue; **the user is limited to a minimum input of 20%!** If used for the drivetrain, this will lead to driver overshoot, and in general inhibits the user's ability to make fine precision adjustments that are critical for game-piece acquisition or scoring opportunities.
+The area highlighted in yellow is the input where precision control is lost.  This poses an issue; **the user is limited to a minimum input of 20%!** If used for the drivetrain, this will lead to driver overshoot; for other controls, it inhibits the user's ability to make fine precision adjustments critical for game-piece acquisition or scoring opportunities.
 
 One could object:
 
@@ -58,13 +58,13 @@ What we really want is something more like this:
 
 <br>
 
-That's much better.  The orange line, a linear interpolation of the blue line, is the more natural expectation of deadzone characteristics.  With some range checking, we can apply a deadzone _without_ sacrificing precision.
+That's much better.  The orange line, a linear interpolation of the blue line, is the more intuitive deadzone characteristic.  With some range checking, we can apply a deadzone _without_ sacrificing precision.
 
 <hr>
 
 ## Response Curves
 
-Response curves are functions that will magnify the input in a non-linear fashion.  Response curves also allow one to customize the 'feel' of a joystick.  In general, the most applicable response curves, specifically for drivetrains, are exponential.  This is because they reduce input on the low end, allowing a user to more easily make micro-adjustments, and accelerate the input towards the high end, so that maximum output is not inhibited. Some exponential curves are shown below: 
+Response curves are functions that will transform the input in a non-linear fashion. allowing one to customize the 'feel' of a joystick.  Some example response curves are shown below, with the input on the {math}`x` axis and the output on the {math}`y`: 
 
 <br>
 
@@ -74,22 +74,22 @@ Response curves are functions that will magnify the input in a non-linear fashio
 
 | Curve     |
 |-----------|
-| 🟥 {math}`x^1` |
-| 🟩 {math}`x^{1.48}` |
-| 🟪 {math}`x^{1.64}` |
-| 🟦 {math}`x^2` |    
-| ⬛ {math}`x^3` |    
+| 🟥 {math}`y = x` |
+| 🟦 {math}`y = x^2` |
+| 🟩 {math}`y = \sqrt{x}` |
+| ⬛ {math}`y = 1-\sqrt{1-x^{2}}` |
+| 🟧 {math}`y = \sqrt{1-\left(x\ -1\right)^{2}}` |
+| 🟪 {math}`y = \frac{1\cos\left(\pi\left(x+1\right)\right)}{2}\ +\ \frac{1}{2}` |    
 </td>
     <td>
 
-   <div style="text-align:right">
-
 ![Response Curves](./response-curves.png)
-</div>
 </td>
   </tr>
 </table>
 
 <br>
 
-A response curve in combination with a deadzone is _extremely_ effective.  One can simultaneously ignore hardware imperfections and enhance micro-adjustment capability.
+A response curve in combination with a deadzone can be effective in customizing and normalizing joystick feel.
+
+The most applicable response curves for drivetrains are generally exponential (e.g. {math}`x^n` where {math}`n \geq 1`) because they reduce input on the low end, allowing a user to more easily make micro-adjustments, and accelerate the input towards the high end, so that maximum output is not inhibited.  However, programmers should ponder their own use case; an alternative function may be preferable.
