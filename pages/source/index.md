@@ -48,11 +48,12 @@ getting-started/quick-start.md
 ```
 
 ```{toctree}
-:maxdepth: 6
+:maxdepth: 2
 :caption: Topics
 :hidden:
 
 topics/precision-control/precision-control.md
+topics/configuration-management/configuration-management.md
 ```
 
 ```{toctree}
