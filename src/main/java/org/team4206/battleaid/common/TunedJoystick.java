@@ -3,19 +3,7 @@ package org.team4206.battleaid.common;
 import edu.wpi.first.wpilibj.XboxController;
 
 /**
- * Utility class for retrieving and adjusting the joystick values from a controller.
- *
- * <p>Example usage:</p>
- * <pre>{@code
- * TunedJoystick joystick = new TunedJoystick(new XboxController(0));
- * 
- * jystck.setDeadzone(0.1d).useResponseCurve(ResponseCurve.QUADRATIC);
- * 
- * double leftX = jystck.getLeftX();  
- * double leftY = jystck.getLeftY();  
- * double rightX = jystck.getRightX();
- * double rightY = jystck.getRightY();
- * }</pre>
+ * Utility class for scaling and tuning joystick values from a controller.
  */
 public final class TunedJoystick {
 
@@ -23,9 +11,8 @@ public final class TunedJoystick {
     private XboxController cntrllr;
     private ResponseCurve rc;
 
-    /*
-     * In this design, only exponential response curves
-     * are implemented so as to simplify implementation.
+    /**
+     * Helper class for applying exponential transformations.
      */
     public static enum ResponseCurve {
         LINEAR(1.0d),
@@ -79,11 +66,17 @@ public final class TunedJoystick {
         return val > deadzone ? map(val, deadzone, 1.0d, 0.0d, 1.0d) : 0.0d;
     }
 
+    /**
+     * Set the type of response curve to be used.
+     */
     public TunedJoystick useResponseCurve(ResponseCurve rc) {
         this.rc = rc;
         return this;
     }
 
+    /**
+     * The expected deadzone is between 0.0 and 1.0.
+     */
     public TunedJoystick setDeadzone(double d) {
         // Check for negative just in case
         this.deadzone = Math.abs(d);

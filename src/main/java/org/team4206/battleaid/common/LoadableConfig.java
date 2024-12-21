@@ -15,48 +15,19 @@ import org.tomlj.TomlParseResult;
 import org.tomlj.TomlTable;
 
 /**
- * Utility to initialize Plain-Old-Java-Objects from *.toml(s). 
- * LoadableConfig can initialize all Java primitives (int, boolean, float, String, etc.) and also objects.<br><br>
+ * Utility class that initializes Plain-Old-Java-Objects from *.toml(s). <br>
+ * LoadableConfig can initialize all Java primitives (int, boolean, float, String, etc.) and also objects. <br>
  * 
- * In order for the initialization to succeed, the class must meet a few requirements:<br>
- * 1. Objects <i>must</i> extends LoadableConfig.<br>
- * 2. Fields of the object must be public.<br>
- * 3. The name of the field must match the key in the *.toml.<br>
- * 4. The input file must be under <i>src/main/deploy/configuration</i>.<br><br>
- * 
- * Nested classes <i>should</i> be static.<br>
- * 
- * <p>Example usage:</p>
- * <pre>{@code
- * public class GenericSubsystem extends LoadableConfig {
- *      public double d;
- *      public String s;
- *      public int i;
- * 
- *      public GenericSubsystem(String filename){
- *          super.load(this, filename);
- *          
- *          // Optional print for debug
- *          LoadableConfig.print(this);
- *      }
- * }
- * 
- * .
- * .
- * .
- * 
- * GenericSubsystem gc = new GenericSubsystem("example.toml");
- * }</pre>
+ * <a href="https://toml.io/">TOML</a>
  */
 public abstract class LoadableConfig {
 
     private Path path;
 
     /**
-     * This custom exception is defined to trap when
-     * the class of the field does not extend the
-     * LoadableConfig class. This makes recursion
-     * of LoadableConfigs more safe.
+     * Raised when a field is an object that does
+     * not extend LoadableConfig.  Populated objects
+     * <i>must</i> extend LoadableConfig.
      */
     public class ExtensionException extends Exception {
         private static final String class_name = LoadableConfig.class.getName();
@@ -71,10 +42,8 @@ public abstract class LoadableConfig {
     }
 
     /**
-     * This custom exception is defined to trap when
-     * there is missing content in the configuration file.
-     * This is an elementary mistake that mostly points to
-     * lack of discipline.
+     * Raised when configuration file is missing
+     * fields defined by the subclass.
      */
     public class ContainsException extends Exception {
         public ContainsException(Field f) {
@@ -85,9 +54,9 @@ public abstract class LoadableConfig {
     }
 
     /**
-     * This function is how extensions of this class invoke the
-     * initialization of all of the class fields. It is also
-     * a 'helper' function to the actual recursive load function.
+     * This function is the 'hook' into LoadableConfig.
+     * When called, all fields of the class will be populated
+     * by the content contained with the file from 'filename'.
      */
     protected void load(LoadableConfig c, String filename) {
         try {
