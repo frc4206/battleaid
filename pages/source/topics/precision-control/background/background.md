@@ -64,7 +64,7 @@ That's much better.  The orange line, a linear interpolation of the blue line, i
 
 ## Response Curves
 
-Response curves are functions that will transform the input in a non-linear fashion. allowing one to customize the 'feel' of a joystick.  Some example response curves are shown below, with the input on the {math}`x` axis and the output on the {math}`y`: 
+Response curves are functions that will transform the input in a non-linear fashion. allowing one to customize the 'feel' of a joystick.  Some example response curves are shown below with the input on the {math}`x` axis and the output on the {math}`y`: 
 
 <br>
 
@@ -90,6 +90,6 @@ Response curves are functions that will transform the input in a non-linear fash
 
 <br>
 
-A response curve in combination with a deadzone can be effective in customizing and normalizing joystick feel.
+A response curve in combination with a deadzone is very effective in customizing and normalizing joystick feel.
 
 The most applicable response curves for drivetrains are generally exponential (e.g. {math}`x^n` where {math}`n \geq 1`) because they reduce input on the low end, allowing a user to more easily make micro-adjustments, and accelerate the input towards the high end, so that maximum output is not inhibited.  However, programmers should ponder their own use case; an alternative function may be preferable.

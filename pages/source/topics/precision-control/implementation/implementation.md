@@ -67,7 +67,7 @@ tunedJoystick.getLeftY();
 2. A circular deadzone is more computationally expensive.
     - The vector magnitude of user input needs to be computed.
 3. Deadzones will generally not be big enough for the difference to be noticed by users.
-    - Area grows exponentially to radius.
+    - Area grows exponentially to perimeter.
 
 | Square | Circular |
 |-|-|

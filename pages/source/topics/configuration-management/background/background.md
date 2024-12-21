@@ -10,7 +10,7 @@ Now it's too little! Ok, so it's somewhere in between, 85° maybe? You try this 
 
 Sound familiar?
 
-Developing software for dynamic configuration is often ignored due to the short-term cost.  However, the aggregate time-savings far outweigh initial development time. 
+Developing software for dynamic configuration is often ignored due to the short-term cost.  However, the accumulated time-savings far outweigh initial development time. 
 
 <hr>
 
@@ -22,14 +22,14 @@ When building robots, parameters in the software will have to be tested against 
 2. Make the change(s)
 3. Re-build and deploy to the robot
 
-One strategy to make the first step easier is to use a `Constants.java` file containing all parameters with the modifiers `static final` functionally equivalent to global variables.  This strategy has some issues though:
+One strategy to make the first step easier is to use a `Constants.java` file containing all parameters with the modifiers `static final`. Those parameters are then used in a fashion just like to global variables.  This strategy has some issues though:
 
 - Deeply nested namespaces (e.g. `Constants.Subsystem.Motor1.PID.kI`)
-   - Not always bad, but too much verbosity can be overbearing 
+   - Too much verbosity can be overbearing 
 - Lack of clear compartmentalization
-   - As the size of `Constants.java` grows, it also becomes harder for readers to parse
-   
-There is another major issue with `Constants.java`: any changes require re-deployment!  Even making one or two small changes will mean time wasted waiting for code to re-build and then upload to your robot. We need a more efficient strategy! 
+   - As the size of `Constants.java` grows, readability decreases
+
+Worst of all, any changes require re-deployment!  Even making one or two small changes will mean time wasted waiting for code to re-build and then upload to your robot. We need a more efficient strategy! 
 
 <hr>
 
@@ -47,4 +47,10 @@ When we use configuration files, the software does not need to be recompiled!  T
 
 ```{tab} Dynamic
 ![Dynamic](./dynamic.png)
+```
+
+After the parameters are moved out of the program into a configuration file, making updates is simpler.  All one has to do is upload the configuration files to the target and restart the robot program.
+
+```{note}
+The FRC Driver Station has a built-in button to restart robot code. 
 ```
