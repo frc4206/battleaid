@@ -33,9 +33,9 @@ tunedJoystick.getLeftY();
 
 <hr>
 
-### Notes
+## Notes
 
-#### I.
+### I.
 
 `TunedJoystick` was created with the intention to be used for drivetrain joysticks, so the only `ResponseCurves` are exponential.  
 
@@ -58,7 +58,7 @@ tunedJoystick.getLeftY();
   </tr>
 </table>
 
-#### II.
+### II.
 
 `TunedJoystick` uses a square deadzone instead of a circular deadzone because:
 

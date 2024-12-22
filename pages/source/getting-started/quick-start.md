@@ -23,6 +23,10 @@ github.username = <your_github_username_here>
 github.token = <your_token_here>
 ```
 
+```{tip}
+You can also put `gradle.properties` under `~/.gradle` if you want your authentication to be system wide.
+```
+
 3. If it does not already exist, create the file `.gitignore` in your project root directory.  Add `gradle.properties` to the list of entries.
 
 ```{danger}

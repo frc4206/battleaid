@@ -12,7 +12,6 @@ extensions = [
     "myst_parser",
     "sphinx_inline_tabs",
     "sphinx.ext.githubpages",
-    "sphinxemoji.sphinxemoji",
 ]
 
 sphinx_tabs_valid_builders = ["linkcheck"]
@@ -35,6 +34,8 @@ html_theme_options = {
     "dark_logo": "images/robovikes-dark.png",
     "sidebar_hide_name": True,
 }
+
+myst_enable_extensions = ["colon_fence"]
 
 highlight_options = {"linenothreshold": 1}
 
