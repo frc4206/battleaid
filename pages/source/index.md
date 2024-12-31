@@ -54,6 +54,7 @@ getting-started/quick-start.md
 
 topics/precision-control/precision-control.md
 topics/configuration-management/configuration-management.md
+topics/version-control/version-control.md
 ```
 
 ```{toctree}

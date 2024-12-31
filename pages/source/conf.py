@@ -33,6 +33,15 @@ html_theme_options = {
     "light_logo": "images/robovikes-light.png",
     "dark_logo": "images/robovikes-dark.png",
     "sidebar_hide_name": True,
+    "source_repository": "https://github.com/frc4206/battleaid",
+    "light_css_variables": {
+        "color-brand-primary": "#031db0",
+        "color-brand-content": "#031db0",
+    },
+    "dark_css_variables": {
+        "color-brand-primary": "#366aca",
+        "color-brand-content": "#366aca",
+    },
 }
 
 myst_enable_extensions = ["colon_fence"]
