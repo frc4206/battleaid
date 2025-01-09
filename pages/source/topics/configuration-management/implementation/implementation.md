@@ -90,7 +90,7 @@ str = "Hello, world!"
 flag = true
 
 # order doesn't matter!
-f = 3.14kkj
+f = 3.14
 d = 1.6181
 
 # read the toml standard for details
@@ -134,28 +134,16 @@ public class RobotContainer {
 
 ## Making Changes
 
-### Setup Gradle
-
-```{admonition} TODO
-:class: note
-
-Provide gradle task for deploying the configuration directory.
-```
-
 ### Steps
 
 1. Make a change in your `*.toml`.
-2. Run `./gradlew deployConfig` in your terminal.
+2. Run `./gradlew deployStandalonefrcStaticFileDeployroborio` in your terminal.
 3. Restart robot code:
 
 <div style="text-align:center">
 
 ![Restart Robot Code](./restart-robot-code.png)
 </div>
-
-```{tip}
-You can verify deployed contents by using `ssh`. 
-```
 
 <hr>
 
