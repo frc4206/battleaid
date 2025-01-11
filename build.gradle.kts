@@ -9,7 +9,7 @@ tasks.register<Jar>("sourceJar") {
 
 plugins {
     id("java-library")
-    id("edu.wpi.first.GradleRIO") version "2024.3.2"
+    id("edu.wpi.first.GradleRIO") version "2025.2.1"
     id("maven-publish")
 }
 
@@ -22,13 +22,13 @@ repositories {
 }
 
 dependencies {
-    api("edu.wpi.first.wpilibj:wpilibj-java:2024.3.2")
-    api("edu.wpi.first.wpiutil:wpiutil-java:2024.3.2")
+    api("edu.wpi.first.wpilibj:wpilibj-java:2025.2.1")
+    api("edu.wpi.first.wpiutil:wpiutil-java:2025.2.1")
     api("org.tomlj:tomlj:1.1.1")
 
     // Test imports
-    testImplementation("edu.wpi.first.wpilibj:wpilibj-java:2024.3.2")
-    testImplementation("edu.wpi.first.wpiutil:wpiutil-java:2024.3.2")
+    testImplementation("edu.wpi.first.wpilibj:wpilibj-java:2025.2.1")
+    testImplementation("edu.wpi.first.wpiutil:wpiutil-java:2025.2.1")
     testImplementation("org.tomlj:tomlj:1.1.1")
     testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
 }

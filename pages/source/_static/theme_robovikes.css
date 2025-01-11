@@ -12,16 +12,10 @@
     --background-color: #4184ff;
 }
 
-/* Logo settings */
-.sidebar-logo {
-    background-color: var(--background-color);
-    border-radius: 15px;
+/* Make code blocks blue */
+span.pre {
+    color: #1E90FF;
 }
-
-[data-theme="dark"] .sidebar-logo {
-    background-color: var(--background-color);
-}
-
 
 /* Set page width */
 .content {

@@ -22,20 +22,23 @@ When building robots, parameters in the software will have to be tested against 
 2. Make the change(s)
 3. Re-build and deploy to the robot
 
-One strategy to make the first step easier is to use a `Constants.java` file containing all parameters with the modifiers `static final`. Those parameters are then used in a fashion just like to global variables.  This strategy has some issues though:
-
-- Deeply nested namespaces (e.g. `Constants.Subsystem.Motor1.PID.kI`)
-   - Too much verbosity can be overbearing 
-- Lack of clear compartmentalization
-   - As the size of `Constants.java` grows, readability decreases
+One strategy to make the first step easier is to use a `Constants.java` file containing all parameters with the modifiers `static final`. Those parameters are then used in a fashion just like global variables.  This strategy has some drawbacks though.  It leads to deeply nested namespaces, large files, and it does not take advantage of compartmentalization. 
 
 Worst of all, any changes require re-deployment!  Even making one or two small changes will mean time wasted waiting for code to re-build and then upload to your robot. We need a more efficient strategy! 
+
+One could object: 
+
+> "We already have a more efficient strategy, we can tweak variables live with Shuffleboard!
+
+It's not that tweaking live is not useful; it has its place.  But there is a cost to the extra flexibility, and that cost is computational bandwidth.  Such flexibility should be stringently reserved.  
+
+The goal is to increase flexibility without sacrificing bandwidth.
 
 <hr>
 
 ## Parameterization
 
-Observe that `Constants.java` contains values initialized once and only once: during program startup.  We can move these values into _configuration_ files.  
+Observe that `Constants.java` contains values initialized once and only once: during program startup.  We can move these values into configuration files.  
 
 ```{important}
 When we use configuration files, the software does not need to be recompiled!  This means we don't have to re-deploy code.
@@ -50,7 +53,3 @@ When we use configuration files, the software does not need to be recompiled!  T
 ```
 
 After the parameters are moved out of the program into a configuration file, making updates is simpler.  All one has to do is upload the configuration files to the target and restart the robot program.
-
-```{note}
-The FRC Driver Station has a built-in button to restart robot code. 
-```
