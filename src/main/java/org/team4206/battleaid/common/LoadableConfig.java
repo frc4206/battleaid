@@ -3,6 +3,8 @@ package org.team4206.battleaid.common;
 import static org.team4206.battleaid.Static.CONFIG_DIR;
 
 import java.io.File;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.nio.file.Path;
@@ -21,6 +23,9 @@ import org.tomlj.TomlTable;
  * <a href="https://toml.io/">TOML</a>
  */
 public abstract class LoadableConfig {
+
+	@Retention(RetentionPolicy.RUNTIME)
+	public @interface Required {}
 
     private Path path;
 
@@ -86,15 +91,21 @@ public abstract class LoadableConfig {
             f.setAccessible(true);
             String type_name = f.getType().getName();
             String id = f.getName();
+			boolean required = f.isAnnotationPresent(Required.class);
 
-            /**
-             * Fields of the class not in the configuration file
-             * point to a careless user. There is no hand-holding
-             * for lack of discipline. Assume the user is stupid.
-             */
-            if (!tt.contains(id)) {
-                throw new ContainsException(f);
-            }
+			/**
+			 * Fields that have the @Required annoation
+			 * MUST be present in the config file.  If they
+			 * are not, an exception is thrown.
+			 */
+			if(required && !tt.contains(id))
+				throw new ContainsException(f);
+
+			/**
+			 * Skip optional and non-present fields.
+			 */
+			if(!required && !tt.contains(id))
+				continue;
 
             /**
              * This massive switch case is responsible for assigning

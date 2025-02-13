@@ -12,8 +12,8 @@ public final class TunedJoystick {
     private ResponseCurve rc;
 
     private int periodMilliseconds = 20;
-    private long t1_lft = 0; // timestamp of previous check
-    private long t1_rght = 0;
+    private long t1_lft = 0;  // timestamp of previous check
+    private long t1_rght = 0; // timestamp of previous check
 
     private double lx = 0.0d;
     private double ly = 0.0d;
@@ -70,8 +70,9 @@ public final class TunedJoystick {
      * deadzone and scaling operations. Default is 20ms.
      * Only use this if you know what you're doing.
      */
-    void setPeriodMilliseconds(int milliseconds) {
+    public TunedJoystick setPeriodMilliseconds(int milliseconds) {
         this.periodMilliseconds = milliseconds;
+        return this;
     }
 
     /*
