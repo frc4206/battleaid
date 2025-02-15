@@ -60,15 +60,12 @@ tunedJoystick.getLeftY();
 
 ### II.
 
-`TunedJoystick` uses a square deadzone instead of a circular deadzone because:
+The user can optionally change how often the values of the joystick are computed.  For example: 
 
-1. A square deadzone is simpler to implement.
-    - Circular deadzone requires checks on the {math}`x` and {math}`y` axis, while a square deadzone does not.
-2. A circular deadzone is more computationally expensive.
-    - The vector magnitude of user input needs to be computed.
-3. Deadzones will generally not be big enough for the difference to be noticed by users.
-    - Area grows exponentially to perimeter.
+```{code-block} java
+:linenos:
 
-| Square | Circular |
-|-|-|
-| ![Square Deadzone](./square-deadzone.png) | ![Circular Deadzone](./circular-deadzone.png) | 
+tunedJoystick.setPeriodMilliseconds(15);
+```
+
+The default `CommandScheduler` loop is `20ms`.  Setting the period longer will feel laggy but quicker periods might use more resources.

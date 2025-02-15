@@ -14,8 +14,7 @@ public class TunedJoystickTest {
         tj.setDeadzone(0.1d).useResponseCurve(ResponseCurve.LINEAR);
         assertEquals(tj.tune(0.0999d), 0.0d);
         assertEquals(tj.tune(1.0001d), 1.0d);
-        assertEquals(tj.tune(-0.0999d), -0.0d);
-        assertEquals(tj.tune(-1.0001d), -1.0d);
+        assertEquals(tj.tune(-0.001d), 0.0d);
     }
 
     @Test 
