@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.4.0] - 2025-02-15
+
+### Added
+- `LoadableConfig` now supports arrays.
+
+### Changed
+- `LoadableConfig` changed to have a prettier print.
+
 ## [0.3.0] - 2025-02-12
 
 ### Added 
@@ -41,4 +49,3 @@ Initial features added to this project.
 ### Added
 - `LoadableConfig`: Dynamically load POJOs from a _*.toml_
 - `TunedJoystick`: Lets user customize feedback response from controller joysticks
- 
