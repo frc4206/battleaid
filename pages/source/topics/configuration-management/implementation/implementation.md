@@ -14,58 +14,93 @@ To define a configuration, you must create a class that meets these requirements
 
 1. The class shall extend `LoadableConfig`.
 2. All fields in the class shall be declared `public` and uninitialized.
-3. Fields shall be typed as one of the following:
-    - Java primitive
-    - `String`
-    - A class that extends `LoadableConfig` (_nested_ configs)
+2. Fields shall be typed as one of the following:
+<table width="100%" border="0" cellpadding="0" summary="">
+    <tr>
+        <td width="20%" align="center"><code class="docutils literal notranslate"><span class="pre">int</span></code></td>
+        <td width="20%" align="center"><code class="docutils literal notranslate"><span class="pre">long</span></code></td>
+        <td width="20%" align="center"><code class="docutils literal notranslate"><span class="pre">short</span></code></td>
+        <td width="20%" align="center"><code class="docutils literal notranslate"><span class="pre">byte</span></code></td>
+        <td width="20%" align="center"><code class="docutils literal notranslate"><span class="pre">char</span></code></td>
+    </tr>
+    <tr>
+        <td width="20%" align="center"><code class="docutils literal notranslate"><span class="pre">float</span></code></td>
+        <td width="20%" align="center"><code class="docutils literal notranslate"><span class="pre">double</span></code></td>
+        <td width="20%" align="center"><code class="docutils literal notranslate"><span class="pre">boolean</span></code></td>
+        <td width="20%" align="center"><code class="docutils literal notranslate"><span class="pre">String</span></code></td>
+        <td width="20%" align="center"><code class="docutils literal notranslate"><span class="pre">LoadableConfig</span></code></td>
+    </tr>
+    <tr>
+        <td width="20%" align="center"><code class="docutils literal notranslate"><span class="pre">int[]</span></code></td>
+        <td width="20%" align="center"><code class="docutils literal notranslate"><span class="pre">long[]</span></code></td>
+        <td width="20%" align="center"><code class="docutils literal notranslate"><span class="pre">short[]</span></code></td>
+        <td width="20%" align="center"><code class="docutils literal notranslate"><span class="pre">byte[]</span></code></td>
+        <td width="20%" align="center"><code class="docutils literal notranslate"><span class="pre">char[]</span></code></td>
+    </tr>
+    <tr>
+        <td width="25%" align="center"><code class="docutils literal notranslate"><span class="pre">float[]</span></code></td>
+        <td width="25%" align="center"><code class="docutils literal notranslate"><span class="pre">double[]</span></code></td>
+        <td width="25%" align="center"><code class="docutils literal notranslate"><span class="pre">boolean[]</span></code></td>
+        <td width="25%" align="center"><code class="docutils literal notranslate"><span class="pre">String[]</span></code></td>
+        <td width="25%" align="center"><code class="docutils literal notranslate"><span class="pre">LoadableConfig[]</span></code></td>
+    </tr>
+</table>
+
 3. The class shall contain a `public` constructor with a single parameter `String filename` that calls `super.load(this, filename)`.
 4. Nested config definitions shall have an empty, `public` constructor and no other constructors.  
 6. Nested config definitions shall be outside the scope of the encompassing config definition.
+7. Non-optional fields shall be annotated `@Required`.
 
 For example:
 
 ```{code-block} java
 :linenos:
 
-// ExampleConfig.java
-public class ExampleConfig extends LoadableConfig {
-    public double d;
-    public byte b;
-    public int i;
-    public float f;
-    public boolean flag;
-    public char c;
-    public short s;
-    public long l;
-    public String str;
-    public NestedConfig nstd1;
-    public NestedConfig nstd2;
+// CarConfig.java
+public class CarConfig extends LoadableConfig {
+    public int mpg;
+    public long odometer_measurement;
+    @Required public Engine some_engine;
+    @Required public boolean is_manual_transmission;
+    @Required public Wheel the_wheels[];
 
-    public ExampleConfig(String filename) {
+    public CarConfig(String filename) {
         super.load(this, filename);
     }
+}
+```
+
+In this case, the `Engine` and `Wheel` are nested `LoadableConfig`s:
+
+```{code-block} java
+:linenos:
+
+// Engine.java
+public class Engine extends LoadableConfig {
+    @Required public int number_of_cylinders;
+    public float liters;
+    public String style;
+    public short horsepower;
+
+    public Engine(){};
 }
 ```
 
 ```{code-block} java
 :linenos:
 
-// NestedConfig.java
-public class NestedConfig extends LoadableConfig {
-    public int that; 
-    public float is;
-    public boolean cool;
+// Wheel.java
+public class Wheel extends LoadableConfig {
+    @Required public float radius;
+    @Required public String position;
+    public int number_of_lugs;
 
-    public NestedConfig(){};
+    public Wheel(){};
 }
 ```
 
 ```{note}
-Optionally, one can call `LoadableConfig.print(this)` to debug the class contents. 
-```
-
-```{warning}
-`LoadableConfig` does not yet support arrays!
+Optionally, one can call `LoadableConfig.print(this)` to view the class contents. 
 ```
 
 <br>
@@ -75,39 +110,31 @@ Optionally, one can call `LoadableConfig.print(this)` to debug the class content
 `LoadableConfig` uses [`TOML`](https://toml.io/en/) for configuration files.  To make a configuration file, you must create a file that meets these requirements:
 
 1. The file shall be located under `src/main/deploy/configuration` and have the extension `.toml`.
-2. The file shall contain all fields defined in the class to be initialized.
-3. The identifier shall be identical to the identifier of the class field.
-4. Table identifiers shall be identical to identifiers of class fields that are nested configs.
-5. Tables shall contain all fields defined in the nested config.
+2. The identifier shall be identical to the identifier of the class field.
 
-Using the `ExampleConfig` from above, a configuration file might be the following: 
+Using the `CarConfig` from above, a configuration file might be the following: 
 
 ```{code-block} toml
 :linenos:
 
-# example-config.toml
-str = "Hello, world!"
-flag = true
+# example-car.toml
+mpg = 32
+odometer_measurement = 151_000
+is_manual_transmission = true
 
-# order doesn't matter!
-f = 3.14
-d = 1.6181
+the_wheels = [
+    { radius = 18.0, position = "front right" },
+    { radius = 18.0, position = "front left" },
+    { radius = 22.0, position = "back left" },
+    { radius = 22.0, position = "back right" }
+]
 
-# read the toml standard for details
-b = 0b1010_0101
-s = 0xFE
-i = 1_000
-l = 999_999_999
+[some_engine]
+number_of_cylinders = 8
+style = "Inline"
+liters = 5.7
+horsepower = 381
 
-[nstd1]
-that = 99
-is = 2.71828
-cool = true
-
-[nstd2]
-that = 1
-is = 0.0
-cool = false
 ```
 
 <br>
@@ -122,7 +149,7 @@ Time to use our config!
 // RobotContainer.java
 public class RobotContainer { 
     public RobotContainer(){
-        ExampleConfig cfg = new ExampleConfig("example-config.toml");
+        CarConfig cfg = new CarConfig("example-config.toml");
 
         // this subsystem needs that config!
         SomeSubsystem ss = new SomeSubsystem(cfg);
