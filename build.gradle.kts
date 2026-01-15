@@ -22,13 +22,13 @@ repositories {
 }
 
 dependencies {
-    api("edu.wpi.first.wpilibj:wpilibj-java:2025.2.1")
-    api("edu.wpi.first.wpiutil:wpiutil-java:2025.2.1")
+    api("edu.wpi.first.wpilibj:wpilibj-java:2026.1.1")
+    api("edu.wpi.first.wpiutil:wpiutil-java:2026.1.1")
     api("org.tomlj:tomlj:1.1.1")
 
     // Test imports
-    testImplementation("edu.wpi.first.wpilibj:wpilibj-java:2025.2.1")
-    testImplementation("edu.wpi.first.wpiutil:wpiutil-java:2025.2.1")
+    testImplementation("edu.wpi.first.wpilibj:wpilibj-java:2026.1.1")
+    testImplementation("edu.wpi.first.wpiutil:wpiutil-java:2026.1.1")
     testImplementation("org.tomlj:tomlj:1.1.1")
     testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
 }
